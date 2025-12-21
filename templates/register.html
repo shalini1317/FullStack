@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Register</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+        }
+
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            width: 300px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        input, button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2 style="text-align:center;">Register</h2>
+
+        <form method="POST" action="/register">
+
+    <input type="text" name="name" placeholder="Username" required><br><br>
+
+    <input type="email" name="email" placeholder="Email" required><br><br>
+
+    <input type="password" name="password" placeholder="Password" required><br><br>
+
+    <input type="text" name="mobile_number" placeholder="Mobile Number" required><br><br>
+
+    <select name="role">
+        <option value="listener">Listener</option>
+        <option value="creator">Creator</option>
+    </select><br><br>
+
+    <button type="submit">Register</button>
+
+</form>
+
+
+
+
+    </div>
+</body>
+</html>

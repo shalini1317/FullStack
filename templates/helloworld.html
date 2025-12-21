@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Music Streaming App</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            height: 100vh;
+            background: linear-gradient(135deg, #121212, #1db954);
+            color: white;
+        }
+
+        .home {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 50px;
+            margin-bottom: 15px;
+        }
+
+        p {
+            font-size: 18px;
+            margin-bottom: 40px;
+            color: #f0f0f0;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 20px;
+        }
+
+        button {
+            padding: 14px 40px;
+            font-size: 18px;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .login {
+            background-color: #1db954;
+            color: white;
+        }
+
+        .register {
+            background-color: white;
+            color: #121212;
+        }
+
+        button:hover {
+            transform: scale(1.08);
+            opacity: 0.9;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="home">
+        <h1>🎶 Music Stream</h1>
+        <p>Stream your favorite songs anytime, anywhere</p>
+
+        <div class="buttons">
+            <button class="login" onclick="login()">Login</button>
+            <button class="register" onclick="register()">Register</button>
+        </div>
+    </div>
+
+    <script>
+        function login() {
+            alert("Login clicked");
+            // window.location.href = "login.html";
+        }
+
+        function register() {
+            alert("Register clicked");
+            // window.location.href = "register.html";
+        }
+    </script>
+
+</body>
+</html>
+
