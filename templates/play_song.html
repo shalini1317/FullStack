@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Play Song</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background: #f4f6f8;
+            text-align: center;
+            padding-top: 100px;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 6px;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+<h2>{{ song.title }} - {{ song.artist }}</h2>
+
+<audio id="audioPlayer" src="{{ url_for('static', filename='songs/' + song.filename) }}"></audio>
+
+<button onclick="togglePlay()">Play ▶</button>
+
+<br><br>
+<a href="{{ url_for('listener_dashboard') }}">⬅ Back to Dashboard</a>
+
+<script>
+let audio = document.getElementById("audioPlayer");
+let isPlaying = false;
+
+function togglePlay() {
+    if (isPlaying) {
+        audio.pause();
+        event.target.innerText = "Play ▶";
+    } else {
+        audio.play();
+        event.target.innerText = "Pause ⏸";
+    }
+    isPlaying = !isPlaying;
+}
+</script>
+
+</body>
+</html>

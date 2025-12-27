@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: #f2f2f2;
+            font-family: Arial;
+        }
+        .card {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        a {
+            display: block;
+            margin-top: 20px;
+            padding: 12px;
+            background: #1db954;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+        }
+        a:hover {
+            background: #169c46;
+        }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h2>Welcome to Dashboard 🎵</h2>
+    <a href="{{ url_for('upload_song') }}">Upload Song</a>
+    <a href="{{ url_for('my_songs') }}">My Songs</a>
+    <a href="{{ url_for('logout') }}">Logout</a>
+</div>
+
+</body>
+</html>
+

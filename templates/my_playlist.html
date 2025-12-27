@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Playlist</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            padding: 30px;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .playlist {
+            max-width: 650px;
+            margin: auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .song {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .song:last-child {
+            border-bottom: none;
+        }
+
+        .left {
+            flex: 1;
+        }
+
+        .controls button {
+            margin-left: 8px;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+
+        .like {
+            font-size: 18px;
+            color: gray;
+        }
+
+        .liked {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+
+<div class="playlist">
+    <h2>My Playlist 🎶</h2>
+
+    {% for song in playlist_songs %}
+    <div class="song">
+        <div class="left">
+            {{ song.title }} - {{ song.artist }}
+
+            <audio src="{{ url_for('static', filename='songs/' + song.file_path) }}"></audio>
+        </div>
+
+        <div class="controls">
+            <!-- PLAY BUTTON -->
+            <button onclick="togglePlay(this)">Play</button>
+
+            <!-- LIKE BUTTON -->
+            <button class="like" onclick="toggleLike(this)">♡</button>
+
+            <!-- DELETE BUTTON -->
+            <form method="POST"
+                  action="{{ url_for('delete_song_from_playlist', song_id=song.id) }}"
+                  style="display:inline;">
+                <button type="submit">Delete</button>
+            </form>
+        </div>
+    </div>
+    {% else %}
+        <p style="text-align:center;">No songs in playlist</p>
+    {% endfor %}
+</div>
+
+<script>
+    function togglePlay(button) {
+        const audio = button.closest('.song').querySelector('audio');
+
+        // Pause all other songs
+        document.querySelectorAll('audio').forEach(a => {
+            if (a !== audio) {
+                a.pause();
+                a.currentTime = 0;
+                a.parentElement.parentElement
+                    .querySelector('button')
+                    .innerText = 'Play';
+            }
+        });
+
+        if (audio.paused) {
+            audio.play();
+            button.innerText = 'Pause';
+        } else {
+            audio.pause();
+            button.innerText = 'Play';
+        }
+    }
+
+    function toggleLike(btn) {
+        if (btn.classList.contains("liked")) {
+            btn.classList.remove("liked");
+            btn.innerText = "♡";
+        } else {
+            btn.classList.add("liked");
+            btn.innerText = "♥";
+        }
+    }
+</script>
+
+</body>
+</html>

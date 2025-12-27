@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Songs</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            padding: 30px;
+        }
+
+        #searchInput {
+            width: 300px;
+            padding: 8px;
+            margin-bottom: 20px;
+        }
+
+        .song-card {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+
+        .song-card h3 {
+            margin: 0 0 5px 0;
+        }
+
+        .song-actions button {
+            margin-right: 10px;
+            padding: 6px 12px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .song-actions .edit-btn {
+            background: #28a745;
+            color: white;
+        }
+
+        .song-actions .delete-btn {
+            background: #dc3545;
+            color: white;
+        }
+
+        audio {
+            display: block;
+            margin-top: 10px;
+            width: 100%;
+        }
+
+        a.upload-link {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 8px 15px;
+            background: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+        }
+    </style>
+</head>
+<body>
+
+<h2>🎵 My Uploaded Songs</h2>
+
+<input type="text" id="searchInput" placeholder="Search by title or artist" onkeyup="searchSongs()">
+
+{% if songs %}
+    {% for song in songs %}
+        <div class="song-card" data-title="{{ song.title | lower }}" data-artist="{{ song.artist | lower }}">
+            <h3>{{ song.title }}</h3>
+            <p>Artist: {{ song.artist }}</p>
+
+            <audio id="audio{{ song.id }}">
+                <source src="{{ url_for('static', filename='songs/' + song.file_path) }}" type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio>
+
+            <div class="song-actions">
+                <!-- Play / Pause -->
+                <button onclick="document.getElementById('audio{{ song.id }}').play()">▶ Play</button>
+                <button onclick="document.getElementById('audio{{ song.id }}').pause()">⏸ Pause</button>
+
+                <!-- Edit -->
+                <a href="{{ url_for('edit_song', song_id=song.id) }}">
+                    <button class="edit-btn">Edit</button>
+                </a>
+
+                <!-- Delete -->
+                <form action="{{ url_for('delete_song', song_id=song.id) }}" method="POST" style="display:inline;">
+                    <button class="delete-btn" type="submit" onclick="return confirm('Are you sure you want to delete this song?')">Delete</button>
+                </form>
+            </div>
+        </div>
+    {% endfor %}
+{% else %}
+    <p>No songs uploaded yet.</p>
+{% endif %}
+
+<a href="{{ url_for('upload_song') }}" class="upload-link">➕ Upload New Song</a>
+
+<script>
+function searchSongs() {
+    let input = document.getElementById('searchInput').value.toLowerCase();
+    let cards = document.getElementsByClassName('song-card');
+
+    Array.from(cards).forEach(function(card) {
+        let title = card.getAttribute('data-title');
+        let artist = card.getAttribute('data-artist');
+        if(title.includes(input) || artist.includes(input)) {
+            card.style.display = 'block';
+        } else {
+            card.style.display = 'none';
+        }
+    });
+}
+</script>
+
+</body>
+</html>
+
+
+

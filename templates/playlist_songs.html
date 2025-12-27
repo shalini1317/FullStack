@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ playlist.name }}</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            margin: 0;
+            padding: 30px;
+        }
+
+        h2 {
+            margin-bottom: 25px;
+        }
+
+        .song-card {
+            background: white;
+            padding: 15px 20px;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .song-info {
+            font-weight: bold;
+            font-size: 15px;
+        }
+
+        audio {
+            width: 220px;
+        }
+
+        .empty {
+            color: #777;
+            font-style: italic;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-bottom: 20px;
+            text-decoration: none;
+            color: #007bff;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Back to Dashboard -->
+    <a class="back-btn" href="{{ url_for('listener_dashboard') }}">
+        ← Back to Dashboard
+    </a>
+
+    <!-- Playlist Name -->
+    <h2>🎵 {{ playlist.name }}</h2>
+
+    <!-- Songs in Playlist -->
+    {% for item in songs %}
+        <div class="song-card">
+            <div class="song-info">
+                {{ item.upload_song.title }} - {{ item.upload_song.artist }}
+            </div>
+
+            <audio controls>
+                <source src="{{ url_for('static', filename=item.upload_song.file_path) }}" type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio>
+        </div>
+    {% else %}
+        <p class="empty">No songs in this playlist</p>
+    {% endfor %}
+
+</body>
+</html>

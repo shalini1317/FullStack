@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Listener Dashboard</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            padding: 30px;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+        }
+
+        .song-card {
+            background: #ffffff;
+            padding: 15px 20px;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+
+        .song-info {
+            font-weight: bold;
+        }
+
+        .song-controls button {
+            padding: 6px 14px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-left: 6px;
+            background: #007bff;
+            color: white;
+        }
+
+        .song-controls button:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+
+<h2>Listener Dashboard 🎧</h2>
+
+<!-- SONG LIST -->
+{% for song in songs %}
+<div class="song-card">
+
+    <div class="song-info">
+        {{ song.title }} - {{ song.artist }}
+    </div>
+
+    <div class="song-controls">
+        <audio src="{{ url_for('static', filename='songs/' + song.file_path) }}"></audio>
+
+        <button onclick="togglePlay(this)">Play</button>
+
+        <!-- ADD TO PLAYLIST -->
+        <form method="POST"
+              action="{{ url_for('add_song_to_playlist', song_id=song.id) }}"
+              style="display:inline;">
+            <input type="hidden" name="song_id" value="{{ song.id }}">
+            <button type="submit">Add to Playlist</button>
+        </form>
+    </div>
+
+</div>
+{% else %}
+<p>No songs available</p>
+{% endfor %}
+
+<script>
+let currentAudio = null;
+let currentButton = null;
+
+function togglePlay(btn) {
+    const audio = btn.previousElementSibling;
+
+    if (currentAudio && currentAudio !== audio) {
+        currentAudio.pause();
+        currentButton.innerText = "Play";
+    }
+
+    if (audio.paused) {
+        audio.play();
+        btn.innerText = "Pause";
+        currentAudio = audio;
+        currentButton = btn;
+    } else {
+        audio.pause();
+        btn.innerText = "Play";
+    }
+}
+</script>
+
+</body>
+</html>

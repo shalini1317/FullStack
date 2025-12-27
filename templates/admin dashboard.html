@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            padding: 30px;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        h3 {
+            margin-top: 40px;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .card, .song-card {
+            background: #fff;
+            padding: 15px 20px;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+
+        .song-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .song-info {
+            font-weight: bold;
+        }
+
+        .song-controls button {
+            padding: 6px 14px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-left: 6px;
+            background: #007bff;
+            color: white;
+        }
+
+        .song-controls button:hover {
+            background: #0056b3;
+        }
+
+        .top-links a {
+            display: inline-block;
+            margin-right: 10px;
+            padding: 8px 12px;
+            background: #1db954;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+        }
+
+        .top-links a:hover {
+            background: #169c46;
+        }
+    </style>
+</head>
+
+<body>
+
+<h2>Admin Dashboard 🎵</h2>
+
+<div class="top-links">
+    <a href="{{ url_for('upload_song') }}">Upload Song</a>
+    <a href="{{ url_for('logout') }}">Logout</a>
+</div>
+
+<!-- CREATOR VIEW: My Uploaded Songs -->
+<h3>My Uploaded Songs</h3>
+{% for song in my_songs %}
+<div class="song-card">
+    <div class="song-info">{{ song.title }} - {{ song.artist }}</div>
+    <div class="song-controls">
+        <audio src="{{ url_for('static', filename='songs/' + song.file_path) }}"></audio>
+        <button onclick="togglePlay(this)">Play</button>
+
+        <a href="{{ url_for('edit_song', song_id=song.id) }}">
+            <button>Edit</button>
+        </a>
+
+        <form method="POST" action="{{ url_for('delete_song', song_id=song.id) }}" style="display:inline;">
+            <button type="submit">Delete</button>
+        </form>
+    </div>
+</div>
+{% else %}
+<p>No uploaded songs yet.</p>
+{% endfor %}
+
+<!-- LISTENER VIEW: All Songs -->
+<h3>All Songs (Listener View)</h3>
+{% for song in songs %}
+<div class="song-card">
+    <div class="song-info">{{ song.title }} - {{ song.artist }}</div>
+    <div class="song-controls">
+        <audio src="{{ url_for('static', filename='songs/' + song.file_path) }}"></audio>
+        <button onclick="togglePlay(this)">Play</button>
+
+        <form method="POST" action="{{ url_for('add_song_to_playlist', song_id=song.id) }}" style="display:inline;">
+            <button type="submit">Add to Playlist</button>
+        </form>
+    </div>
+</div>
+{% else %}
+<p>No songs available.</p>
+{% endfor %}
+
+<script>
+let currentAudio = null;
+let currentButton = null;
+
+function togglePlay(btn) {
+    const audio = btn.previousElementSibling;
+
+    if (currentAudio && currentAudio !== audio) {
+        currentAudio.pause();
+        currentButton.innerText = "Play";
+    }
+
+    if (audio.paused) {
+        audio.play();
+        btn.innerText = "Pause";
+        currentAudio = audio;
+        currentButton = btn;
+    } else {
+        audio.pause();
+        btn.innerText = "Play";
+    }
+}
+</script>
+
+</body>
+</html>
